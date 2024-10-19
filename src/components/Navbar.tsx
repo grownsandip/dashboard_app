@@ -5,12 +5,12 @@ const Navbar = () => {
   return (
     <div className='flex items-center justify-between p-4'>
       {/* Searchbar */}
-      <div className='hidden md:flex'>
+      <div className='hidden md:flex items-center text-xs rounded-full gap-2 ring-[1.5px] ring-gray-300 px-2'>
         <Image src="/search.png" alt="search" width={14} height={14}/>
-        <input type="text" placeholder='search'/>
+        <input type="text" placeholder='search' className='width-[200px] bg-transparent p-2 outline-none'/>
       </div>
       {/* user and OTHER */}
-      <div className='flex items-center gap-6'>
+      <div className='flex items-center gap-6 justify-end w-full'>
         <div className='bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer'>
             <Image src="/message.png" alt="" width={20} height={20}/>
         </div>
