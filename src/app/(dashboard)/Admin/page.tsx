@@ -2,6 +2,7 @@ import CountChart from '@/components/CountChart'
 import AttendanceChart from '@/components/AttendanceChart'
 import UserCards from '@/components/UserCards'
 import React from 'react'
+import FinanceChart from '@/components/FinanceChart'
 
 const AdminPage = () => {
   return (
@@ -26,7 +27,9 @@ const AdminPage = () => {
         </div>
       </div>
       {/* BOTTOMCHARTS */}
-      <div className=''></div>
+      <div className='w-full h-[500px]'>
+        <FinanceChart/>
+      </div>
       </div>
       {/* RIGHT */}
       <div className='w-full lg:w-1/3'>right</div>
