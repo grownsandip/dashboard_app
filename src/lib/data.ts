@@ -921,6 +921,7 @@ export const calendarEvents = [
   {
     title: "CS505",
     allDay: false,
+    Faculty:"Arunangshu Paul",
     start: new Date(2024, 9, 21, 9, 15),
     end: new Date(2024, 9, 21, 10, 5),
   },

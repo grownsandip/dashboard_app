@@ -44,8 +44,15 @@
   .rbc-time-view {
     border-color: #eee !important;
   }
+  .rbc-time-header-cell .rbc-today{
+    background-color: #04aa6d !important;
+    color:white !important;
+  }
   
-  .rbc-time-header {
+  /* .rbc-time-header {
+    display: none !important;
+  } */
+  .rbc-allday-cell{
     display: none !important;
   }
   
@@ -58,7 +65,7 @@
   }
   
   .rbc-time-gutter.rbc-time-column .rbc-timeslot-group {
-    padding: 0px 10px !important;
+    padding:0px 20px !important;
   }
   
   .rbc-timeslot-group {
@@ -72,10 +79,14 @@
   .rbc-event{
     border: none !important;
     color: black !important;
-    padding: 10px !important;
-    margin: 10px !important;
-    width: 99% !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    width: 100% !important; 
+    z-index: 2 !important;
   }  
+  .rbc-events-container{
+    width: 100% !important;
+  }
   .rbc-event:nth-child(1) {
     background-color: #e2f8ff !important;
   }
@@ -100,7 +111,6 @@
   .rbc-event:nth-child(8) {
     background-color: #fdf2fb !important;
   }
-  
   .rbc-event-label{
     color: gray !important;
     margin-bottom: 5px !important;

@@ -14,6 +14,7 @@ const BigCalendar = () => {
       <Calendar
       localizer={localizer}
       events={calendarEvents}
+      step={50}
       views={["work_week","day"]}
       view={view}
       startAccessor="start"
