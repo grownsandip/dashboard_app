@@ -8,7 +8,7 @@ const FacultyPage = () => {
     {/* left */}
     <div className='w-full xl:w-2/3'>
       <div className='bg-white rounded-md p-4 h-full'>
-        <h1 className='text-xl font-semibold'>Schedule(4A)</h1>
+        <h1 className='text-xl font-semibold'>Faculty Name</h1>
         <BigCalendar/>
       </div>
     </div>

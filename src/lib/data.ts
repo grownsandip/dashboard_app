@@ -11,9 +11,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Math", "Geometry"],
-    classes: ["1B", "2A", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FST",
+    designation:"Assistant Professor"
   },
   {
     id: 2,
@@ -23,9 +22,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/936126/pexels-photo-936126.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Physics", "Chemistry"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 3,
@@ -35,9 +33,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Biology"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 4,
@@ -47,9 +44,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/1187765/pexels-photo-1187765.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["History"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 5,
@@ -59,9 +55,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/192341/pexels-photo-192341.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Music", "History"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 6,
@@ -71,9 +66,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/712513/pexels-photo-712513.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Physics"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Associate professor"
   },
   {
     id: 7,
@@ -83,9 +77,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["English", "Spanish"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FST",
+    designation:"Assistant professor",
   },
   {
     id: 8,
@@ -95,9 +88,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/936623/pexels-photo-936623.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Math", "Geometry"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 9,
@@ -107,9 +99,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Literature", "English"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
   {
     id: 9,
@@ -119,9 +110,8 @@ export const teachersData = [
     photo:
       "https://images.pexels.com/photos/943474/pexels-photo-943474.jpeg?auto=compress&cs=tinysrgb&w=1200",
     phone: "1234567890",
-    subjects: ["Biology"],
-    classes: ["5A", "4B", "3C"],
-    address: "123 Main St, Anytown, USA",
+    department: "FMC",
+    designation:"Assistant professor"
   },
 ];
 
@@ -921,7 +911,6 @@ export const calendarEvents = [
   {
     title: "CS505",
     allDay: false,
-    Faculty:"Arunangshu Paul",
     start: new Date(2024, 9, 21, 9, 15),
     end: new Date(2024, 9, 21, 10, 5),
   },
