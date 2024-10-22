@@ -1,21 +1,18 @@
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role,studentsData } from '@/lib/data'
+import { parentsData, role} from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Student={
-    id:number,
-    studentId:string,
-    name:string,
-    email?:string,
-    photo:string,
-    phone:string,
-    program:string,
-    semester:string,
-    address:string
+type Parent={
+    id: number,
+    name: string,
+    students:string[],
+    email: string,
+    phone: string,
+    address: string,
 }
 const columns = [
     {
@@ -24,23 +21,18 @@ const columns = [
         className:"",
     },
     {
-        header: "Student ID",
-        accessor: "studentid",
-        className:"hidden md:table-cell",
-    },
-    {
-        header: "Enrolled",
-        accessor: "program",
-        className:"hidden md:table-cell",
-    },
-    {
-        header:"Semester",
-        accessor:"semester",
+        header: "Student Names",
+        accessor: "studentnames",
         className:"hidden md:table-cell",
     },
     {
         header: "Contacts",
         accessor: "contacts",
+        className: "hidden md:table-cell",
+    },
+    {
+        header: "Address",
+        accessor: "address",
         className: "hidden md:table-cell",
     },
     {
@@ -50,23 +42,21 @@ const columns = [
     },
 ];
 
-const StudentsListpage = () => {
-    const renderRow=(item:Student)=>(
+const ParentsListpage = () => {
+    const renderRow=(item:Parent)=>(
          <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
             <td className='flex items-center p-4 gap-4'>
-                <Image src={item.photo} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover'/>
                 <div className='flex flex-col'>
                    <h3 className='font-semibold'>{item.name}</h3>
                    <p className='text-xs text-gray-500'>{item?.email}</p>
                 </div>
             </td>
-            <td className='hidden md:table-cell'>{item.studentId}</td>
-            <td className='hidden md:table-cell'>{item.program}</td>
-            <td className='hidden md:table-cell'>{item.semester}</td>
+            <td className='hidden md:table-cell'>{item.students.join(",")}</td>
             <td className='hidden md:table-cell'>{item.phone}</td>
+            <td className='hidden md:table-cell'>{item.address}</td>
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/students/${item.id}`}>
+                    <Link href={`/list/parents/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                         <Image src="/view.png" alt="" height={16} width={16}/>
                     </button>
@@ -82,7 +72,7 @@ const StudentsListpage = () => {
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}
             <div className='flex items-center justify-between'>
-                <h1 className='hidden md:block text-lg font-semibold'>All students</h1>
+                <h1 className='hidden md:block text-lg font-semibold'>All Parents</h1>
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
@@ -99,11 +89,11 @@ const StudentsListpage = () => {
                 </div>
             </div>
             {/* LIST */}
-            <Table columns={columns} renderRow={renderRow} data={studentsData}/>
+            <Table columns={columns} renderRow={renderRow} data={parentsData}/>
             {/* PAGENATION */}
             <Pagenation />
         </div>
     )
 }
 
-export default StudentsListpage
+export default ParentsListpage
