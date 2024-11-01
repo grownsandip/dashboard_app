@@ -1,3 +1,4 @@
+import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -71,9 +72,11 @@ const StudentsListpage = () => {
                         <Image src="/view.png" alt="" height={16} width={16}/>
                     </button>
                     </Link>
-                    {role==="admin"&&(<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
-                        <Image src="/delete.png" alt="" height={16} width={16}/>
-                    </button>)}
+                    {role==="admin"&&(//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
+                        //<Image src="/delete.png" alt="" height={16} width={16}/>
+                    //</button>
+                    <FormModal table='student' type='delete' id={item.id}/>
+                    )}
                 </div>
             </td>
          </tr>
@@ -92,9 +95,11 @@ const StudentsListpage = () => {
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
-                        <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
-                            <Image src="/plus.png" alt="filter" height={14} width={14} />
-                        </button>
+                        {role ==="admin" &&(//<button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
+                            //<Image src="/plus.png" alt="filter" height={14} width={14} />
+                       // </button>
+                       <FormModal table='student' type='create'/>
+                       )}
                     </div>
                 </div>
             </div>
