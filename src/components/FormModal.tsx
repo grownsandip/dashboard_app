@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react'
+import FacultyForm from './FacultyForm';
 
 const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "subject" | "semester" | "exam" | "assingment" | "event" | "announcement" | "parent"; type: "create" | "update" | "delete"; data?: any; id?: number }) => {
     const size = type == "create" ? "w-8 h-8" : "w-7 h-7"
@@ -13,7 +14,8 @@ const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "
                 <button className='bg-red-600 text-white rounded-md border-none py-2 px-4 w-max self-center'>delete</button>
             </form>
         ) : (
-            "create or update form"
+            // "create or update form"
+            <FacultyForm type='update' data={data}/>
         );
     };
     return (

@@ -1,5 +1,6 @@
 import Announcements from '@/components/Announcements'
 import BigCalendar from '@/components/BigCalendar'
+import FormModal from '@/components/FormModal'
 import Performance from '@/components/Performance'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,6 +20,22 @@ const SingleFacultyPage = () => {
             </div>
             <div className='w-2/3 flex flex-col justify-between gap-4'>
               <h1 className='text-xl font-semibold'>Faculty Name</h1>
+              <div className='flex items-center gap-4'>
+              <FormModal table="faculty" type="update" data={{
+                id:1,
+                username:"Sandip",
+                email:"roysandip33290@gmail.com",
+                password:"password",
+                firstName:"Sandip",
+                lastName:"Roy",
+                phone:"9862525399",
+                address:"Rajbari,Dharmanagar,North Tripura",
+                bloodType:"A+",
+                birthday:"2000-01-04",
+                sex:"male",
+                img:""
+              }}/>
+              </div>
               <p className='text-xs text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, corrupti commodi aliquid ratione ex(faculty description)</p>
               <div className='flex items-center justify-between gap-2 flex-wrap text-xs font-medium'>
                 <div className='w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2'>
