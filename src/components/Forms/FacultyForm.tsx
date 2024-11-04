@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import InputField from './InputField';
+import InputField from '../InputField';
 import Image from 'next/image';
 
 const schema = z.object({
@@ -28,7 +28,7 @@ const FacultyForm = ({ type, data }: { type: "create" | "update"; data?: any }) 
     })
     return (
         <form className='flex flex-col gap-8' onSubmit={onSubmit}>
-            <h1 className='text-xl font-semibold'>create a new Faculty</h1>
+            <h1 className='text-xl font-semibold'>Create a new Faculty</h1>
             <span className='text-xs text-gray-400 font-medium'>Authentication information</span>
             <div className='flex justify-between flex-wrap gap-4'>
                 <InputField type={type} label="Username" name="username" defaultValue={data?.username} register={register} error={errors.username} />

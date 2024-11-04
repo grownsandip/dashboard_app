@@ -1,8 +1,19 @@
 'use client';
 import Image from 'next/image';
 import React, { useState } from 'react'
-import FacultyForm from './FacultyForm';
-
+// import FacultyForm from './Forms/FacultyForm';
+// import StudentForm from './Forms/StudentForm';
+import dynamic from 'next/dynamic';
+const FacultyForm=dynamic(()=>import("./Forms/FacultyForm"),{
+    loading:()=><h1>loading....</h1>,
+})
+const StudentForm=dynamic(()=>import("./Forms/StudentForm"),{
+    loading:()=><h1>loading....</h1>,
+})
+const forms: { [key: string]: (type: "create" | "update", data?: any) => JSX.Element; } = {
+    faculty: (type, data) => <FacultyForm type={type} data={data} />,
+    student: (type, data) => <StudentForm type={type} data={data} />,
+};
 const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "subject" | "semester" | "exam" | "assingment" | "event" | "announcement" | "parent"; type: "create" | "update" | "delete"; data?: any; id?: number }) => {
     const size = type == "create" ? "w-8 h-8" : "w-7 h-7"
     const bgColor = type == "create" ? "bg-Yellow" : type == "delete" ? "bg-Sky" : "bg-Pruple"
@@ -13,10 +24,9 @@ const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "
                 <span className='font-medium text-center'>Are you sure you want to delete {table}</span>
                 <button className='bg-red-600 text-white rounded-md border-none py-2 px-4 w-max self-center'>delete</button>
             </form>
-        ) : (
-            // "create or update form"
-            <FacultyForm type='update' data={data}/>
-        );
+        ) : type === "create" || type === "update" ? (
+            forms[table](type, data)
+        ) : ("form not found");
     };
     return (
         <>
@@ -27,7 +37,7 @@ const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "
                 open && (
                     <div className='w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center'>
                         <div className='bg-white p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%]'>
-                            <Form/>
+                            <Form />
                             <div className='absolute top-4 right-4 cursor-pointer' onClick={() => setOpen(false)}>
                                 <Image src="/close.png" alt="" width={14} height={14} />
                             </div>
