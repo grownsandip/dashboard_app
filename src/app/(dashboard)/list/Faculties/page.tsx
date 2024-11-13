@@ -4,7 +4,7 @@ import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { role, teachersData } from '@/lib/data'
 import prisma from '@/lib/prisma'
-import { Class, Faculty, Subject } from '@prisma/client'
+import { Class, Faculty, Prisma, Subject } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -79,12 +79,34 @@ const renderRow = (item: FacultyList) => (
         </td>
     </tr>
 )
-const FacultyListpage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
+const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
     const { page, ...queryParams } = searchParams;//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
+    //URL PARAMS CONDITION Params may have many roles we need to filter them out
+    const query: Prisma.FacultyWhereInput = {};
+    if (queryParams) {
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case "classId": {
+                        query.lessons = {
+                            some: {
+                                classId: parseInt(value),
+                            },
+                        };
+                    }
+                        break;
+                        case "search":{
+                            query.firstname={contains:value,mode:'insensitive'}
+                        }
+                }
+            }
+        }
+    }
     // data fetchinng
     const [data, count] = await prisma.$transaction([
         prisma.faculty.findMany({
+            where: query,
             include: {
                 subjects: true,
                 classes: true,
@@ -93,7 +115,7 @@ const FacultyListpage = async ({ searchParams }: { searchParams: { [key: string]
             skip: Item_per_page * (p - 1), //when p=0 we skip 0 items,when 1 we skip first 10 items....so on
         }
         ),
-        prisma.faculty.count()
+        prisma.faculty.count({ where: query })
     ]);
     //console.log(data)
     //console.log(count)
@@ -122,7 +144,7 @@ const FacultyListpage = async ({ searchParams }: { searchParams: { [key: string]
             {/* PAGENATION */}
             <Pagenation page={p} count={count} />
         </div>
-    )
+    );
 }
 
-export default FacultyListpage
+export default FacultyListpage;

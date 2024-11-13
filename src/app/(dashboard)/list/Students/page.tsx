@@ -2,42 +2,35 @@ import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role,studentsData } from '@/lib/data'
+import { role, studentsData } from '@/lib/data'
+import prisma from '@/lib/prisma'
+import { Item_per_page } from '@/lib/settings'
+import { Class, Prisma, Student } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-type Student={
-    id:number,
-    studentId:string,
-    name:string,
-    email?:string,
-    photo:string,
-    phone:string,
-    program:string,
-    semester:string,
-    address:string
-}
+type studentList = Student & {class:Class}
 const columns = [
     {
         header: "Name",
         accessor: "name",
-        className:"",
+        className: "",
     },
     {
         header: "Student ID",
         accessor: "studentid",
-        className:"hidden md:table-cell",
+        className: "hidden md:table-cell",
     },
     {
         header: "Enrolled",
         accessor: "program",
-        className:"hidden md:table-cell",
+        className: "hidden md:table-cell",
     },
     {
-        header:"Semester",
-        accessor:"semester",
-        className:"hidden md:table-cell",
+        header: "Semester",
+        accessor: "semester",
+        className: "hidden md:table-cell",
     },
     {
         header: "Contacts",
@@ -47,40 +40,78 @@ const columns = [
     {
         header: "Actions",
         accessor: "actions",
-        className:"",
+        className: "",
     },
 ];
 
-const StudentsListpage = () => {
-    const renderRow=(item:Student)=>(
-         <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-            <td className='flex items-center p-4 gap-4'>
-                <Image src={item.photo} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover'/>
-                <div className='flex flex-col'>
-                   <h3 className='font-semibold'>{item.name}</h3>
-                   <p className='text-xs text-gray-500'>{item?.email}</p>
-                </div>
-            </td>
-            <td className='hidden md:table-cell'>{item.studentId}</td>
-            <td className='hidden md:table-cell'>{item.program}</td>
-            <td className='hidden md:table-cell'>{item.semester}</td>
-            <td className='hidden md:table-cell'>{item.phone}</td>
-            <td>
-                <div className='flex items-center gap-2'>
-                    <Link href={`/list/Students/${item.id}`}>
+const renderRow = (item: studentList) => (
+    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+        <td className='flex items-center p-4 gap-4'>
+            <Image src={item.img ||"/noAvatar.png"} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover' />
+            <div className='flex flex-col'>
+                <h3 className='font-semibold'>{item.firstname}</h3>
+                <p className='text-xs text-gray-500'>{item?.email}</p>
+            </div>
+        </td>
+        <td className='hidden md:table-cell'>{item.id}</td>
+        <td className='hidden md:table-cell'>{item.class.name}</td>
+        <td className='hidden md:table-cell'>{item.semId}th</td>
+        <td className='hidden md:table-cell'>{item.phone}</td>
+        <td>
+            <div className='flex items-center gap-2'>
+                <Link href={`/list/Students/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
-                        <Image src="/view.png" alt="" height={16} width={16}/>
+                        <Image src="/view.png" alt="" height={16} width={16} />
                     </button>
-                    </Link>
-                    {role==="admin"&&(//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
-                        //<Image src="/delete.png" alt="" height={16} width={16}/>
+                </Link>
+                {role === "admin" && (//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
+                    //<Image src="/delete.png" alt="" height={16} width={16}/>
                     //</button>
-                    <FormModal table='student' type='delete' id={item.id}/>
-                    )}
-                </div>
-            </td>
-         </tr>
-    )
+                    <FormModal table='student' type='delete' id={item.id} />
+                )}
+            </div>
+        </td>
+    </tr>
+)
+const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+    const { page, ...queryParams } = searchParams;//getting info from search params
+    const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
+    //URL PARAMS CONDITION Params may have many roles we need to filter them out
+    const query: Prisma.StudentWhereInput = {};
+    if (queryParams) {
+        for (const [key, value] of Object.entries(queryParams)) {
+            if (value !== undefined) {
+                switch (key) {
+                    case "facultyId": {
+                        query.class = {
+                            lessons:{
+                            some: {
+                                 facultyId: value,
+                            },
+                        }
+                        };
+                    }
+                        break;
+                    case "search": {
+                        query.firstname = { contains: value, mode: 'insensitive' }
+                    }
+                }
+            }
+        }
+    }
+    // data fetchinng
+    const [data, count] = await prisma.$transaction([
+        prisma.student.findMany({
+            where: query,
+            include: {
+                class: true,
+            },
+            take: Item_per_page,//for pagenaton each page 10 items
+            skip: Item_per_page * (p - 1), //when p=0 we skip 0 items,when 1 we skip first 10 items....so on
+        }
+        ),
+        prisma.student.count({ where: query })
+    ]);
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}
@@ -95,18 +126,18 @@ const StudentsListpage = () => {
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
-                        {role ==="admin" &&(//<button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
+                        {role === "admin" && (//<button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             //<Image src="/plus.png" alt="filter" height={14} width={14} />
-                       // </button>
-                       <FormModal table='student' type='create'/>
-                       )}
+                            // </button>
+                            <FormModal table='student' type='create' />
+                        )}
                     </div>
                 </div>
             </div>
             {/* LIST */}
-            <Table columns={columns} renderRow={renderRow} data={studentsData}/>
+            <Table columns={columns} renderRow={renderRow} data={data} />
             {/* PAGENATION */}
-            <Pagenation />
+            <Pagenation  page={p} count={count}/>
         </div>
     )
 }
