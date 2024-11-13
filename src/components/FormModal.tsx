@@ -4,17 +4,17 @@ import React, { useState } from 'react'
 // import FacultyForm from './Forms/FacultyForm';
 // import StudentForm from './Forms/StudentForm';
 import dynamic from 'next/dynamic';
-const FacultyForm=dynamic(()=>import("./Forms/FacultyForm"),{
-    loading:()=><h1>loading....</h1>,
+const FacultyForm = dynamic(() => import("./Forms/FacultyForm"), {
+    loading: () => <h1>loading....</h1>,
 })
-const StudentForm=dynamic(()=>import("./Forms/StudentForm"),{
-    loading:()=><h1>loading....</h1>,
+const StudentForm = dynamic(() => import("./Forms/StudentForm"), {
+    loading: () => <h1>loading....</h1>,
 })
 const forms: { [key: string]: (type: "create" | "update", data?: any) => JSX.Element; } = {
     faculty: (type, data) => <FacultyForm type={type} data={data} />,
     student: (type, data) => <StudentForm type={type} data={data} />,
 };
-const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "subject" | "semester" | "exam" | "assingment" | "event" | "announcement" | "parent"; type: "create" | "update" | "delete"; data?: any; id?: number }) => {
+const FormModal = ({ table, type, data, id }: { table: "faculty" | "student" | "subject" | "semester" | "exam" | "assingment" | "event" | "announcement" | "parent"; type: "create" | "update" | "delete"; data?: any; id?: number | string }) => {
     const size = type == "create" ? "w-8 h-8" : "w-7 h-7"
     const bgColor = type == "create" ? "bg-Yellow" : type == "delete" ? "bg-Sky" : "bg-Pruple"
     const [open, setOpen] = useState(false);

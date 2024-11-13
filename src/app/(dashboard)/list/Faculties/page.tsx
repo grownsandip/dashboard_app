@@ -2,34 +2,39 @@ import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role, studentsData } from '@/lib/data'
+import { role, teachersData } from '@/lib/data'
 import prisma from '@/lib/prisma'
-import { Item_per_page } from '@/lib/settings'
-import { Class, Prisma, Student } from '@prisma/client'
+import { Class, Faculty, Prisma, Subject } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { Item_per_page } from '@/lib/settings'
 
-type studentList = Student & {class:Class}
+type FacultyList = Faculty & { subjects: Subject[] } & { classes: Class[] } //type declared for the typescript 
 const columns = [
     {
-        header: "Name",
-        accessor: "name",
+        header: "Info",
+        accessor: "info",
         className: "",
     },
     {
-        header: "Student ID",
-        accessor: "studentid",
+        header: "FacultyId",
+        accessor: "facultyid",
         className: "hidden md:table-cell",
     },
     {
-        header: "Enrolled",
-        accessor: "program",
+        header: "Subjects",
+        accessor: "subjects",
         className: "hidden md:table-cell",
     },
     {
-        header: "Semester",
-        accessor: "semester",
+        header: "Classes",
+        accessor: "classes",
+        className: "hidden md:table-cell",
+    },
+    {
+        header: "Address",
+        accessor: "address",
         className: "hidden md:table-cell",
     },
     {
@@ -37,87 +42,88 @@ const columns = [
         accessor: "contacts",
         className: "hidden md:table-cell",
     },
+
     {
         header: "Actions",
-        accessor: "actions",
+        accessor: "action",
         className: "",
     },
-];
 
-const StudentsListpage = () => {
-    const renderRow=(item:Student)=>(
-         <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-            <td className='flex items-center p-4 gap-4'>
-                <Image src={item.photo} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover'/>
-                <div className='flex flex-col'>
-                   <h3 className='font-semibold'>{item.name}</h3>
-                   <p className='text-xs text-gray-500'>{item?.email}</p>
-                </div>
-            </td>
-            <td className='hidden md:table-cell'>{item.studentId}</td>
-            <td className='hidden md:table-cell'>{item.program}</td>
-            <td className='hidden md:table-cell'>{item.semester}</td>
-            <td className='hidden md:table-cell'>{item.phone}</td>
-            <td>
-                <div className='flex items-center gap-2'>
-                    <Link href={`/list/Students/${item.id}`}>
+];
+const renderRow = (item: FacultyList) => (
+    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+        <td className='flex items-center p-4 gap-4'>
+            <Image src={item.img || "/noAvatar.png"} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover' />
+            <div className='flex flex-col'>
+                <h3 className='font-semibold'>{item.firstname}</h3>
+                <p className='text-xs text-gray-500'>{item?.email}</p>
+            </div>
+        </td>
+        {/* <td className='hidden md:table-cell'>{item.teacherId}</td> */}
+        <td className='hidden md:table-cell'>{item.username}</td>
+        <td className='hidden md:table-cell'>{item.subjects.map(subject => subject.name).join(",")}</td>
+        <td className='hidden md:table-cell'>{item.classes.map(classItem => classItem.name).join(",")}</td>
+        <td className='hidden md:table-cell'>{item.address}</td>
+        <td className='hidden md:table-cell'>{item.phone}</td>
+        <td>
+            <div className='flex items-center gap-2'>
+                <Link href={`/list/Faculties/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                         <Image src="/view.png" alt="" height={16} width={16} />
                     </button>
                 </Link>
-                {role === "admin" && (//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
-                    //<Image src="/delete.png" alt="" height={16} width={16}/>
-                    //</button>
-                    <FormModal table='student' type='delete' id={item.id} />
+                {role === "admin" && (
+                    <FormModal table='faculty' type='delete' id={item.id} />
                 )}
             </div>
         </td>
     </tr>
 )
-const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
     const { page, ...queryParams } = searchParams;//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
-    const query: Prisma.StudentWhereInput = {};
+    const query: Prisma.FacultyWhereInput = {};
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
                 switch (key) {
-                    case "facultyId": {
-                        query.class = {
-                            lessons:{
+                    case "classId": {
+                        query.lessons = {
                             some: {
-                                 facultyId: value,
+                                classId: parseInt(value),
                             },
-                        }
                         };
                     }
                         break;
-                    case "search": {
-                        query.firstname = { contains: value, mode: 'insensitive' }
-                    }
+                        case "search":{
+                            query.firstname={contains:value,mode:'insensitive'}
+                        }
                 }
             }
         }
     }
     // data fetchinng
     const [data, count] = await prisma.$transaction([
-        prisma.student.findMany({
+        prisma.faculty.findMany({
             where: query,
             include: {
-                class: true,
+                subjects: true,
+                classes: true,
             },
             take: Item_per_page,//for pagenaton each page 10 items
             skip: Item_per_page * (p - 1), //when p=0 we skip 0 items,when 1 we skip first 10 items....so on
         }
         ),
-        prisma.student.count({ where: query })
+        prisma.faculty.count({ where: query })
     ]);
+    //console.log(data)
+    //console.log(count)
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}
             <div className='flex items-center justify-between'>
-                <h1 className='hidden md:block text-lg font-semibold'>All students</h1>
+                <h1 className='hidden md:block text-lg font-semibold'>All teachers</h1>
                 <div className='flex flex-col md:flex-row items-center gap-4 w-full md:w-auto'>
                     <TableSearch />
                     <div className='flex items-center gap-4 self-end'>
@@ -127,10 +133,8 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
-                        {role === "admin" && (//<button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
-                            //<Image src="/plus.png" alt="filter" height={14} width={14} />
-                            // </button>
-                            <FormModal table='student' type='create' />
+                        {role == "admin" && (
+                            <FormModal table='faculty' type='create' />
                         )}
                     </div>
                 </div>
@@ -138,9 +142,9 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
             {/* LIST */}
             <Table columns={columns} renderRow={renderRow} data={data} />
             {/* PAGENATION */}
-            <Pagenation  page={p} count={count}/>
+            <Pagenation page={p} count={count} />
         </div>
-    )
+    );
 }
 
-export default StudentsListpage
+export default FacultyListpage;
