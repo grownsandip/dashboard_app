@@ -1,12 +1,17 @@
 "use client";
+import { studentsData } from '@/lib/data';
 import Image from 'next/image';
 import React from 'react'
 import { PieChart, Pie,ResponsiveContainer } from 'recharts';
+
+const id = 0
+
 const data = [
-    { name: 'Group A', value: 92, fill: "#C3EBFA " },
-    { name: 'Group B', value: 8, fill: "#FAE27C" },
+    { name: 'Group A', value: studentsData[id].performance, fill: "#C3EBFA " },
+    { name: 'Group B', value: 100 - studentsData[id].performance, fill: "#FAE27C" },
 ]
 const Performance = () => {
+
     return (
         <div className='bg-white p-4 rounded-md h-80 relative'>
             <div className='flex items-center justify-between'>

@@ -15,79 +15,79 @@ const menuItems = [
       {
         icon: "/teacher.png",
         label: "faculties",
-        href: "/list/Faculties",
+        href: "faculties",
         visible: ["admin", "faculties"],
       },
       {
         icon: "/student.png",
         label: "Students",
-        href: "/list/Students",
+        href: "/students",
         visible: ["admin", "faculties"],
       },
       {
         icon: "/parent.png",
         label: "Parents",
-        href: "/list/parents",
+        href: "/parents",
         visible: ["admin", "faculties"],
       },
       {
         icon: "/subject.png",
         label: "Subjects",
-        href: "/list/subjects",
+        href: "/subjects",
         visible: ["admin"],
       },
       {
         icon: "/class.png",
         label: "Classes",
-        href: "/list/classes",
+        href: "/classes",
         visible: ["admin", "faculties"],
       },
       {
         icon: "/lesson.png",
         label: "Lessons",
-        href: "/list/lessons",
+        href: "/lessons",
         visible: ["admin", "faculties"],
       },
       {
         icon: "/exam.png",
         label: "Exams",
-        href: "/list/exams",
+        href: "/exams",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/assignment.png",
         label: "Assignments",
-        href: "/list/assignments",
+        href: "/assignments",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/result.png",
         label: "Results",
-        href: "/list/results",
+        href: "/results",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/attendance.png",
         label: "Attendance",
-        href: "/list/attendance",
+        href: "/attendance",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/calendar.png",
         label: "Events",
-        href: "/list/events",
+        href: "/events",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/message.png",
         label: "Messages",
-        href: "/list/messages",
+        href: "/messages",
         visible: ["admin", "faculties", "student", "parent"],
       },
       {
         icon: "/announcement.png",
         label: "Announcements",
-        href: "/list/announcements",
+        href: "/announcements",
         visible: ["admin", "faculties", "student", "parent"],
       },
     ],
@@ -130,7 +130,7 @@ const Menu = () => {
                   <Link href={item.href} key={item.label}
                   className="flex items-center justify-center lg:justify-start gap-4 py-2 text-gray-500 rounded-md hover:bg-lightSky md:px-2"
                   >
-                    <Image src={item.icon} alt="icons" height={20} width={20} />
+                    <Image src={item.icon} alt="icon" height={20} width={20} />
                     <span className="hidden lg:block">{item.label}</span>
                   </Link>
                 )

@@ -1,11 +1,14 @@
 import Announcements from '@/components/Announcements'
 import BigCalendar from '@/components/BigCalendar'
 import Performance from '@/components/Performance'
+import { studentsData } from '@/lib/data'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 const SingleStudentPage=() => {
+
+  const id = 0
   return (
     <div className='flex-1 p-4 flex flex-col gap-4 xl:flex-row'>
       {/* LEFT*/}
@@ -15,27 +18,27 @@ const SingleStudentPage=() => {
           {/* USERINFO CARDS */}
           <div className='bg-Sky py-6 px-4 rounded-md flex-1 flex gap-4 '>
             <div className='w-1/3'>
-              <Image src="https://images.pexels.com/photos/6325958/pexels-photo-6325958.jpeg?auto=compress&cs=tinysrgb&w=400" alt='img' width={144} height={144} className='w-36 h-36 rounded-full object-cover' />
+              <Image src={studentsData[id].photo} alt='img' width={144} height={144} className='w-36 h-36 rounded-full object-cover' />
             </div>
             <div className='w-2/3 flex flex-col justify-between gap-4'>
-              <h1 className='text-xl font-semibold'>Student Name</h1>
-              <p className='text-xs text-gray-500'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, corrupti commodi aliquid ratione ex(faculty description)</p>
+              <h1 className='text-xl font-semibold'>{studentsData[id].name}</h1>
+              <p className='text-xs text-gray-500'>{studentsData[id].address}</p>
               <div className='flex items-center justify-between gap-2 flex-wrap text-xs font-medium'>
                 <div className='w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2'>
                   <Image src="/blood.png" alt='blood' height={14} width={14} />
-                  <span>A+</span>
+                  <span>{studentsData[id].bloodGroup}</span>
                 </div>
                 <div className='w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2'>
                   <Image src="/date.png" alt='blood' height={14} width={14} />
-                  <span>27 october 2024</span>
+                  <span>{studentsData[id].addmissionDate}</span>
                 </div>
                 <div className='w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2'>
                   <Image src="/mail.png" alt='blood' height={14} width={14} />
-                  <span>abc@gmail.com</span>
+                  <span>{studentsData[id].email}</span>
                 </div>
                 <div className='w-full md:w-1/3 lg:w-full xl:w-1/3 flex items-center gap-2'>
                   <Image src="/phone.png" alt='blood' height={14} width={14} />
-                  <span>132425</span>
+                  <span>{studentsData[id].phone}</span>
                 </div>
               </div>
             </div>
@@ -46,7 +49,7 @@ const SingleStudentPage=() => {
             <div className='bg-white rounded-md p-4 flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]'>
               <Image src="/singleAttendance.png" alt="" height={24} width={24} className='w-6 h-6' />
               <div className=''>
-                <h1 className='text-xl font-semibold'>90%</h1>
+                <h1 className='text-xl font-semibold'>{studentsData[id].attendence}%</h1>
                 <span className='text-sm text-gray-400'>Attendence</span>
               </div>
             </div>
@@ -54,7 +57,7 @@ const SingleStudentPage=() => {
             <div className='bg-white rounded-md p-4 flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]'>
               <Image src="/singleBranch.png" alt="" height={24} width={24} className='w-6 h-6' />
               <div className=''>
-                <h1 className='text-xl font-semibold'>2nd</h1>
+                <h1 className='text-xl font-semibold'>{studentsData[id].semester}</h1>
                 <span className='text-sm text-gray-400'>semester</span>
               </div>
             </div>
@@ -62,7 +65,7 @@ const SingleStudentPage=() => {
             <div className='bg-white rounded-md p-4 flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]'>
               <Image src="/singleLesson.png" alt="" height={24} width={24} className='w-6 h-6' />
               <div className=''>
-                <h1 className='text-xl font-semibold'>10</h1>
+                <h1 className='text-xl font-semibold'>{studentsData[id].subjects}</h1>
                 <span className='text-sm text-gray-400'>subjects</span>
               </div>
             </div>
@@ -70,7 +73,7 @@ const SingleStudentPage=() => {
             <div className='bg-white rounded-md p-4 flex gap-4 w-full md:w-[48%] xl:w-[45%] 2xl:w-[48%]'>
               <Image src="/singleClass.png" alt="" height={24} width={24} className='w-6 h-6' />
               <div className=''>
-                <h1 className='text-xl font-semibold'>6</h1>
+                <h1 className='text-xl font-semibold'>{studentsData[id].courses}</h1>
                 <span className='text-sm text-gray-400'>Courses</span>
               </div>
             </div>
