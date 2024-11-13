@@ -3,78 +3,100 @@ import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import { role, teachersData } from '@/lib/data'
+import prisma from '@/lib/prisma'
+import { Class, Faculty, Subject } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { Item_per_page } from '@/lib/settings'
 
-type Teacher={
-    id:number,
-    teacherId:string,
-    name:string,
-    email?:string,
-    photo:string,
-    phone:string,
-    department:string,
-    designation:string,
-}
+type FacultyList = Faculty & { subjects: Subject[] } & { classes: Class[] } //type declared for the typescript 
 const columns = [
     {
-        header: "Name",
-        accessor: "name",
-        className:"",
+        header: "Info",
+        accessor: "info",
+        className: "",
     },
     {
-        header: "Designation",
-        accessor: "designation",
-        className:"hidden md:table-cell",
+        header: "FacultyId",
+        accessor: "facultyid",
+        className: "hidden md:table-cell",
     },
     {
-        header:"Department",
-        accessor:"department",
-        className:"hidden md:table-cell",
+        header: "Subjects",
+        accessor: "subjects",
+        className: "hidden md:table-cell",
+    },
+    {
+        header: "Classes",
+        accessor: "classes",
+        className: "hidden md:table-cell",
+    },
+    {
+        header: "Address",
+        accessor: "address",
+        className: "hidden md:table-cell",
     },
     {
         header: "Contacts",
         accessor: "contacts",
         className: "hidden md:table-cell",
     },
-    
-    {
-        header:"Actions",
-        accessor:"action",
-        className:"",
-    },
-       
-];
 
-const FacultyListpage = () => {
-    const renderRow=(item:Teacher)=>(
-         <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-            <td className='flex items-center p-4 gap-4'>
-                <Image src={item.photo} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover'/>
-                <div className='flex flex-col'>
-                   <h3 className='font-semibold'>{item.name}</h3>
-                   <p className='text-xs text-gray-500'>{item?.email}</p>
-                </div>
-            </td>
-            {/* <td className='hidden md:table-cell'>{item.teacherId}</td> */}
-            <td className='hidden md:table-cell'>{item.designation}</td>
-            <td className='hidden md:table-cell'>{item.department}</td>
-            <td className='hidden md:table-cell'>{item.phone}</td>
-            <td>
-                <div className='flex items-center gap-2'>
-                    <Link href={`/list/Faculties/${item.id}`}>
+    {
+        header: "Actions",
+        accessor: "action",
+        className: "",
+    },
+
+];
+const renderRow = (item: FacultyList) => (
+    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+        <td className='flex items-center p-4 gap-4'>
+            <Image src={item.img || "/noAvatar.png"} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover' />
+            <div className='flex flex-col'>
+                <h3 className='font-semibold'>{item.firstname}</h3>
+                <p className='text-xs text-gray-500'>{item?.email}</p>
+            </div>
+        </td>
+        {/* <td className='hidden md:table-cell'>{item.teacherId}</td> */}
+        <td className='hidden md:table-cell'>{item.username}</td>
+        <td className='hidden md:table-cell'>{item.subjects.map(subject => subject.name).join(",")}</td>
+        <td className='hidden md:table-cell'>{item.classes.map(classItem => classItem.name).join(",")}</td>
+        <td className='hidden md:table-cell'>{item.address}</td>
+        <td className='hidden md:table-cell'>{item.phone}</td>
+        <td>
+            <div className='flex items-center gap-2'>
+                <Link href={`/list/Faculties/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
-                        <Image src="/view.png" alt="" height={16} width={16}/>
+                        <Image src="/view.png" alt="" height={16} width={16} />
                     </button>
-                    </Link>
-                    {role==="admin"&&(
-                        <FormModal table='faculty' type='delete' id={item.id}/>
-                    )}
-                </div>
-            </td>
-         </tr>
-    )
+                </Link>
+                {role === "admin" && (
+                    <FormModal table='faculty' type='delete' id={item.id} />
+                )}
+            </div>
+        </td>
+    </tr>
+)
+const FacultyListpage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
+    const { page, ...queryParams } = searchParams;//getting info from search params
+    const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
+    // data fetchinng
+    const [data, count] = await prisma.$transaction([
+        prisma.faculty.findMany({
+            include: {
+                subjects: true,
+                classes: true,
+            },
+            take: Item_per_page,//for pagenaton each page 10 items
+            skip: Item_per_page * (p - 1), //when p=0 we skip 0 items,when 1 we skip first 10 items....so on
+        }
+        ),
+        prisma.faculty.count()
+    ]);
+    //console.log(data)
+    //console.log(count)
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}
@@ -89,16 +111,16 @@ const FacultyListpage = () => {
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
-                        {role=="admin"&&(
-                            <FormModal table='faculty' type='create'/>
+                        {role == "admin" && (
+                            <FormModal table='faculty' type='create' />
                         )}
                     </div>
                 </div>
             </div>
             {/* LIST */}
-            <Table columns={columns} renderRow={renderRow} data={teachersData}/>
+            <Table columns={columns} renderRow={renderRow} data={data} />
             {/* PAGENATION */}
-            <Pagenation />
+            <Pagenation page={p} count={count} />
         </div>
     )
 }

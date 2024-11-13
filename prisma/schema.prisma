@@ -91,6 +91,7 @@ model Lesson {
 model Class {
   id            Int            @id @default(autoincrement())
   name          String         @unique
+  capacity      Int
   instructorId  String?
   instructor    Faculty?       @relation(fields: [instructorId], references: [id])
   lessons       Lesson[]
