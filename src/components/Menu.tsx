@@ -1,6 +1,9 @@
+"use client"
+
 import Link from "next/link";
 import Image from "next/image";
 import { role } from "@/lib/data";
+import { usePathname } from 'next/navigation'
 
 const menuItems = [
   {
@@ -8,7 +11,7 @@ const menuItems = [
     items: [
       {
         icon: "/home.png",
-        label: "Home",
+        label: "Dashboard",
         href: "/",
         visible: ["admin", "faculties", "student", "parent"],
       },
@@ -118,6 +121,7 @@ const menuItems = [
 ];
 
 const Menu = () => {
+  const pathname = usePathname();
   return (
     <div className="mt-4 text-sm">
       {menuItems.map(i => (
@@ -133,6 +137,7 @@ const Menu = () => {
                     <Image src={item.icon} alt="icon" height={20} width={20} />
                     <span className="hidden lg:block">{item.label}</span>
                   </Link>
+                  
                 )
               }
             })
