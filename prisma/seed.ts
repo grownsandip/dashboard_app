@@ -48,6 +48,7 @@ async function main() {
       { name: "Operating System" },
       { name: "Data Science" },
       { name: "Computer Organization" },
+      { name: "Theory Of Computation" },
     ];
   
     for (const subject of subjectData) {
