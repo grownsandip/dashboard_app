@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  # backend:
+  #   container_name: backend
+  #   image: backend
+  #   build:
+  #     context: .
+  #     dockerfile: backend.dockerfile
+  #   restart: always
+  #   ports:
+  #     - ${BACKEND_PORT}:${BACKEND_PORT}
+  #   environment:
+  #     - DB_PORT=${DB_PORT}
+  #     - DB_USER=${DB_USER}
+  #     - DB_PASSWORD=${DB_PASSWORD}
+  #     - DB_NAME=${DB_NAME}
+  #     - BACKEND_PORT=${BACKEND_PORT}
+  #     - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}
+
+  db:
+    container_name: db
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
