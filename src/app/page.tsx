@@ -1,101 +1,113 @@
+'use client'
 import Link from 'next/link'
 const Homepage = () => {
+  const data = { "backgroundImage": "url('/header.png');" };
   return (
-<div className="font-[sans-serif] bg-gradient-to-r from-purple-900 via-purple-800 to-purple-600 text-gray-800">
-      <div className="min-h-screen flex fle-col items-center justify-center lg:p-6 p-4">
-        <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
-          <div>
-            <Link href=""><img
-              src="logo-main.png" alt="logo" className='w-100 mb-12 inline-block' />
-            </Link>
-            <h2 className="text-4xl font-extrabold lg:leading-[50px] text-white">
-            Institute Management System
-            </h2>
-            <p className="text-sm mt-6 text-white">Securely manage your academic and administrative tasks in one place.</p>
-            <p className="text-sm mt-6 text-white">Don't have an account <Link href="" className="text-white font-semibold underline ml-1">Register here</Link></p>
+    <div className="leading-normal tracking-normal text-indigo-400 m-6 bg-cover bg-fixed p-0 m-0" style={data}>
+      {/* <div className="h-full"> */}
+      {/* <!--Nav--> */}
+      <div className="w-full container mx-auto">
+        <div className="w-full flex items-center justify-between">
+          <a className="flex items-center text-indigo-400 no-underline mt-5 hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500 p-2">Institute  Management System</span>
+          </a>
+
+          <div className="flex w-1/2 justify-end content-center mt-5">
+            <a className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out" href="https://twitter.com/intent/tweet?url=#">
+              <svg className="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path
+                  d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"
+                ></path>
+              </svg>
+            </a>
+            <a
+              className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
+              href="https://www.facebook.com/sharer/sharer.php?u=#"
+            >
+              <svg className="fill-current h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+                <path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path>
+              </svg>
+            </a>
           </div>
+        </div>
+      </div>
 
+      {/* <!--Main--> */}
+      <div className="container pt-24 md:pt-36 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+        {/* <!--Left Col--> */}
+        <div className="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+          <h1 className="my-4 text-3xl md:text-5xl text-white opacity-75 font-bold leading-tight text-center md:text-left">
 
-          <div className="bg-white rounded-xl sm:px-6 px-4 py-8 max-w-md w-full h-max shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] max-lg:mx-auto">
-          <form>
-            <div className="mb-8">
-              <h3 className="text-3xl font-extrabold text-gray-800">Sign in</h3>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-400 via-pink-500 to-purple-500">
+              Smart Management for Smarter Institutes
+            </span>
+
+          </h1>
+          <p className="leading-normal text-base md:text-2xl mb-8 text-center md:text-left">
+            A unified platform for managing every aspect of your institute, from administration to academics
+          </p>
+
+          <form className="bg-gray-900 opacity-75 w-[80%] shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
+            <div className="mb-4">
+              <label className="block text-blue-300 py-2 font-bold mb-2" htmlFor="emailaddress">
+                Login into your account
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight outline-none"
+                id="emailaddress"
+                type="email"
+                placeholder="you@somewhere.com"
+              />
             </div>
-            <div className="sm:flex sm:items-start space-x-4 max-sm:space-y-4 mb-8">
-              <button type="button" className="py-2.5 px-4 text-sm font-semibold rounded-md text-blue-500 bg-blue-100 hover:bg-blue-200 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" className="inline mr-4" viewBox="0 0 512 512">
-                  <path fill="#fbbd00"
-                    d="M120 256c0-25.367 6.989-49.13 19.131-69.477v-86.308H52.823C18.568 144.703 0 198.922 0 256s18.568 111.297 52.823 155.785h86.308v-86.308C126.989 305.13 120 281.367 120 256z"
-                    data-original="#fbbd00" />
-                  <path fill="#0f9d58"
-                    d="m256 392-60 60 60 60c57.079 0 111.297-18.568 155.785-52.823v-86.216h-86.216C305.044 385.147 281.181 392 256 392z"
-                    data-original="#0f9d58" />
-                  <path fill="#31aa52"
-                    d="m139.131 325.477-86.308 86.308a260.085 260.085 0 0 0 22.158 25.235C123.333 485.371 187.62 512 256 512V392c-49.624 0-93.117-26.72-116.869-66.523z"
-                    data-original="#31aa52" />
-                  <path fill="#3c79e6"
-                    d="M512 256a258.24 258.24 0 0 0-4.192-46.377l-2.251-12.299H256v120h121.452a135.385 135.385 0 0 1-51.884 55.638l86.216 86.216a260.085 260.085 0 0 0 25.235-22.158C485.371 388.667 512 324.38 512 256z"
-                    data-original="#3c79e6" />
-                  <path fill="#cf2d48"
-                    d="m352.167 159.833 10.606 10.606 84.853-84.852-10.606-10.606C388.668 26.629 324.381 0 256 0l-60 60 60 60c36.326 0 70.479 14.146 96.167 39.833z"
-                    data-original="#cf2d48" />
-                  <path fill="#eb4132"
-                    d="M256 120V0C187.62 0 123.333 26.629 74.98 74.98a259.849 259.849 0 0 0-22.158 25.235l86.308 86.308C162.883 146.72 206.376 120 256 120z"
-                    data-original="#eb4132" />
-                </svg>
-                Sign in with Google
-              </button>
-              <button type="button" className="py-2.5 px-4 text-sm font-semibold rounded-md text-blue-500 bg-blue-100 hover:bg-blue-200 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="#007bff" viewBox="0 0 167.657 167.657">
-                  <path d="M83.829.349C37.532.349 0 37.881 0 84.178c0 41.523 30.222 75.911 69.848 82.57v-65.081H49.626v-23.42h20.222V60.978c0-20.037 12.238-30.956 30.115-30.956 8.562 0 15.92.638 18.056.919v20.944l-12.399.006c-9.72 0-11.594 4.618-11.594 11.397v14.947h23.193l-3.025 23.42H94.026v65.653c41.476-5.048 73.631-40.312 73.631-83.154 0-46.273-37.532-83.805-83.828-83.805z" data-original="#010002"></path>
-                </svg>
-              </button>
-              <button type="button" className="py-2.5 px-4 text-sm font-semibold rounded-md text-blue-500 bg-blue-100 hover:bg-blue-200 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="#000" viewBox="0 0 22.773 22.773">
-                  <path d="M15.769 0h.162c.13 1.606-.483 2.806-1.228 3.675-.731.863-1.732 1.7-3.351 1.573-.108-1.583.506-2.694 1.25-3.561C13.292.879 14.557.16 15.769 0zm4.901 16.716v.045c-.455 1.378-1.104 2.559-1.896 3.655-.723.995-1.609 2.334-3.191 2.334-1.367 0-2.275-.879-3.676-.903-1.482-.024-2.297.735-3.652.926h-.462c-.995-.144-1.798-.932-2.383-1.642-1.725-2.098-3.058-4.808-3.306-8.276v-1.019c.105-2.482 1.311-4.5 2.914-5.478.846-.52 2.009-.963 3.304-.765.555.086 1.122.276 1.619.464.471.181 1.06.502 1.618.485.378-.011.754-.208 1.135-.347 1.116-.403 2.21-.865 3.652-.648 1.733.262 2.963 1.032 3.723 2.22-1.466.933-2.625 2.339-2.427 4.74.176 2.181 1.444 3.457 3.028 4.209z" data-original="#000000"></path>
-                </svg>
-              </button>
-            </div>
-
             <div>
-              <label className="text-gray-800 text-sm mb-2 block">User name</label>
-              <div className="relative flex items-center">
-                <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600" placeholder="Enter user name" />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" className="w-[18px] h-[18px] absolute right-4" viewBox="0 0 24 24">
-                  <circle cx="10" cy="7" r="6" data-original="#000000"></circle>
-                  <path d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z" data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="text-gray-800 text-sm mb-2 block">Password</label>
-              <div className="relative flex items-center">
-                <input name="password" type="password" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600" placeholder="Enter password" />
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" className="w-[18px] h-[18px] absolute right-4 cursor-pointer" viewBox="0 0 128 128">
-                  <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" data-original="#000000"></path>
-                </svg>
-              </div>
-            </div>
-            <div className="mt-4 text-right">
-              <a href="jajvascript:void(0);" className="text-blue-600 text-sm font-semibold hover:underline">
-                Forgot your password?
-              </a>
+              <input
+                className="shadow appearance-none border rounded w-full p-3 text-gray-700 leading-tight outline-none"
+                id="emailaddress"
+                type="passowrd"
+                placeholder="password"
+              />
             </div>
 
-            <div className="mt-8">
-              <button type="button" className="w-full shadow-xl py-3 px-6 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
+            <div className="flex items-center justify-between pt-4">
+              <button
+                className="bg-gradient-to-r from-purple-800 to-green-500 hover:from-pink-500 hover:to-green-500 text-white font-bold py-2 px-4 rounded focus:ring transform transition hover:scale-105 duration-300 ease-in-out outline-none"
+                type="button" onClick={() => location.href = '/admin'}
+              >
                 Log in
               </button>
+              <div>
+                Don't have an account?
+                <Link href='/sign-up' className="inline-block align-baseline font-bold text-sm text-blue-300 hover:text-blue-400 p-2">
+                  Register
+                </Link>
+              </div>
+
             </div>
-            <p className="text-sm mt-8 text-center text-gray-800">Don't have an account? <Link href="" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</Link></p>
           </form>
         </div>
 
+        {/* <!--Right Col--> */}
+        <div className="w-full xl:w-3/5 p-12 overflow-hidden">
+          <img className="mx-auto w-full md:w-4/5 transform -rotate-6 transition hover:scale-105 duration-700 ease-in-out hover:rotate-6" src="/macbook.svg" />
+        </div>
 
+        <div className="mx-auto md:pt-16">
+          <p className="text-blue-400 font-bold pb-8 lg:pb-6 text-center">
+            Download our app:
+          </p>
+          <div className="flex w-full justify-center md:justify-start pb-20 lg:pb-0 fade-in">
+            <img src="/App Store.svg" className="h-12 pr-12 transform hover:scale-125 duration-300 ease-in-out" />
+            <img src="/Play Store.svg" className="h-12 transform hover:scale-125 duration-300 ease-in-out" />
+          </div>
+        </div>
 
-
+        {/* <!--Footer--> */}
+        <div className="w-full pt-4 pb-4 text-sm text-center md:text-left fade-in">
+          <a className="text-gray-500 no-underline hover:no-underline" href="#">&copy; App 2024</a>
+          - Created by Sandip Roy & Dipan Nama
         </div>
       </div>
+      {/* </div> */}
     </div>
   )
 }
