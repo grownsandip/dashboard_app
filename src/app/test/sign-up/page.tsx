@@ -1,7 +1,9 @@
 import Link from 'next/link'
-const Homepage = () => {
+import React from 'react'
+
+const RegisterPage = () => {
   return (
-<div className="font-[sans-serif] bg-gradient-to-r from-purple-900 via-purple-800 to-purple-600 text-gray-800">
+    <div className="font-[sans-serif] bg-gradient-to-r from-purple-900 via-purple-800 to-purple-600 text-gray-800">
       <div className="min-h-screen flex fle-col items-center justify-center lg:p-6 p-4">
         <div className="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
           <div>
@@ -12,14 +14,14 @@ const Homepage = () => {
             Institute Management System
             </h2>
             <p className="text-sm mt-6 text-white">Securely manage your academic and administrative tasks in one place.</p>
-            <p className="text-sm mt-6 text-white">Don't have an account <Link href="" className="text-white font-semibold underline ml-1">Register here</Link></p>
+            <p className="text-sm mt-6 text-white">Already have an account? <Link href="/sign-in" className="text-white font-semibold underline ml-1">Login here</Link></p>
           </div>
 
 
           <div className="bg-white rounded-xl sm:px-6 px-4 py-8 max-w-md w-full h-max shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] max-lg:mx-auto">
           <form>
             <div className="mb-8">
-              <h3 className="text-3xl font-extrabold text-gray-800">Sign in</h3>
+              <h3 className="text-3xl font-extrabold text-gray-800">Sign Up</h3>
             </div>
             <div className="sm:flex sm:items-start space-x-4 max-sm:space-y-4 mb-8">
               <button type="button" className="py-2.5 px-4 text-sm font-semibold rounded-md text-blue-500 bg-blue-100 hover:bg-blue-200 focus:outline-none">
@@ -43,7 +45,7 @@ const Homepage = () => {
                     d="M256 120V0C187.62 0 123.333 26.629 74.98 74.98a259.849 259.849 0 0 0-22.158 25.235l86.308 86.308C162.883 146.72 206.376 120 256 120z"
                     data-original="#eb4132" />
                 </svg>
-                Sign in with Google
+                Sign up with Google
               </button>
               <button type="button" className="py-2.5 px-4 text-sm font-semibold rounded-md text-blue-500 bg-blue-100 hover:bg-blue-200 focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="#007bff" viewBox="0 0 167.657 167.657">
@@ -67,6 +69,15 @@ const Homepage = () => {
                 </svg>
               </div>
             </div>
+
+            <div className="mt-4">
+              <label className="text-gray-800 text-sm mb-2 block">Email</label>
+              <div className="relative flex items-center">
+                <input name="username" type="text" required className="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-md outline-blue-600" placeholder="Enter user email" />
+                <svg data-name="1-Email" xmlns="http://www.w3.org/2000/svg" className="w-[18px] h-[18px] absolute right-4" fill="#bbb" stroke="#bbb" viewBox="0 0 32 32"><path d="M29 4H3a3 3 0 0 0-3 3v18a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-.72 2L16 14.77 3.72 6zM30 25a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.23l13.42 9.58a1 1 0 0 0 1.16 0L30 7.23z"/></svg>
+              </div>
+            </div>
+
             <div className="mt-4">
               <label className="text-gray-800 text-sm mb-2 block">Password</label>
               <div className="relative flex items-center">
@@ -84,10 +95,10 @@ const Homepage = () => {
 
             <div className="mt-8">
               <button type="button" className="w-full shadow-xl py-3 px-6 text-sm font-semibold rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-                Log in
+                Sign Up
               </button>
             </div>
-            <p className="text-sm mt-8 text-center text-gray-800">Don't have an account? <Link href="" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Register here</Link></p>
+            <p className="text-sm mt-8 text-center text-gray-800">Already have an account? <Link href="/sign-in" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">Login here</Link></p>
           </form>
         </div>
 
@@ -100,4 +111,4 @@ const Homepage = () => {
   )
 }
 
-export default Homepage
+export default RegisterPage

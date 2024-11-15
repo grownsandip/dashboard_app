@@ -15,7 +15,7 @@ export default function dashboardLayout({
   return (
     <div>
       {
-        pathName !== "/admin/sign-in" && pathName !== "/admin/sign-up"
+        pathName !== "/admin/sign-in" && pathName !== "/admin/sign-up" && pathName !== "/settings"
         ? (
           <div className="h-screen flex">
             <div className="w-[14%] md:w-[8%] lg:w-[16%] xl:w-[14%] p-4">

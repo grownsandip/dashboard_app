@@ -87,11 +87,11 @@ const SingleStudentPage=() => {
         <div className='bg-white p-4 rounded-md'>
           <h1 className='text-xl font-semibold'>Shortcuts</h1>
           <div className='mt-4 flex gap-4 flex-wrap text-xs text-gray-500'>
-            <Link href={`/list/Lessons?/classId=${2}`} className='rounded-md p-3 bg-Sky'>Student&apos;s Classes</Link>
-            <Link href={`/list/Faculties?/classId=${2}`} className='rounded-md p-3 bg-pink-50'>Student&apos;s Faculties</Link>
-            <Link href={`/list/Results?/studentId=${"student2"}`} className='rounded-md p-3 bg-Purple'>Student&apos;s Results</Link>
-            <Link href={`/list/Exams?/classId=${2}`} className='rounded-md p-3 bg-YellowLight'>Student&apos;s Exams</Link>
-            <Link href={`/list/Assignments?/classId=${2}`} className='rounded-md p-3 bg-lightSky'>Student&apos;s Assignments</Link>
+            <Link href={`/lessons?/classId=${2}`} className='rounded-md p-3 bg-Sky'>Student&apos;s Classes</Link>
+            <Link href={`/faculties?/classId=${2}`} className='rounded-md p-3 bg-pink-50'>Student&apos;s Faculties</Link>
+            <Link href={`/results?/studentId=${"student2"}`} className='rounded-md p-3 bg-Purple'>Student&apos;s Results</Link>
+            <Link href={`/exams?/classId=${2}`} className='rounded-md p-3 bg-YellowLight'>Student&apos;s Exams</Link>
+            <Link href={`/assignments?/classId=${2}`} className='rounded-md p-3 bg-lightSky'>Student&apos;s Assignments</Link>
           </div>
         </div>
         <Performance/>

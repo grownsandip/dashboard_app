@@ -52,7 +52,7 @@ const renderRow = (item: AssignmentList) => (
         <td>{new Intl.DateTimeFormat("en-IN").format(item.dueDate)}</td>
         <td>
             <div className='flex items-center gap-2'>
-                <Link href={`/list/Exams/${item.id}`}>
+                <Link href={`/exams/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                         <Image src="/view.png" alt="" height={16} width={16} />
                     </button>
