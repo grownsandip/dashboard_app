@@ -3,8 +3,6 @@
 ## Getting Started
 
 ```bash
-npm install next@latest react@latest react-dom@latest
-
 nmp i
 
 npm run dev
