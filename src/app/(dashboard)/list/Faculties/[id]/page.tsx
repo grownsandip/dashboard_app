@@ -104,11 +104,11 @@ const SingleFacultyPage = () => {
         <div className='bg-white p-4 rounded-md'>
           <h1 className='text-xl font-semibold'>Shortcuts</h1>
           <div className='mt-4 flex gap-4 flex-wrap text-xs text-gray-500'>
-            <Link href="/" className='rounded-md p-3 bg-Sky'>Teacher&apos;s Classes</Link>
+            <Link href={`/list/Classes?/instructorId=${"teacher2"}`} className='rounded-md p-3 bg-Sky'>Teacher&apos;s Classes</Link>
             <Link href={`/list/Students?/facultyId=${"teacher2"}`} className='rounded-md p-3 bg-pink-50'>Teacher&apos;s Students</Link>
-            <Link href="/" className='rounded-md p-3 bg-Purple'>Teacher&apos;s Lessons</Link>
-            <Link href="/" className='rounded-md p-3 bg-YellowLight'>Teacher&apos;s Exams</Link>
-            <Link href="/" className='rounded-md p-3 bg-lightSky'>Teacher&apos;s Assignments</Link>
+            <Link href={`/list/Lessons?/facultyId=${"teacher2"}`} className='rounded-md p-3 bg-Purple'>Teacher&apos;s Lessons</Link>
+            <Link href={`/list/Exams?/facultyId=${"teacher2"}`} className='rounded-md p-3 bg-YellowLight'>Teacher&apos;s Exams</Link>
+            <Link href={`/list/Assignments?/facultyId=${"teacher2"}`} className='rounded-md p-3 bg-lightSky'>Teacher&apos;s Assignments</Link>
           </div>
         </div>
         <Performance/>

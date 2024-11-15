@@ -1,1 +1,1 @@
-export const Item_per_page=5
+export const Item_per_page=10

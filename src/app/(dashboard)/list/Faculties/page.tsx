@@ -80,7 +80,7 @@ const renderRow = (item: FacultyList) => (
     </tr>
 )
 const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
-    const { page, ...queryParams } = searchParams;//getting info from search params
+    const { page, ...queryParams } = searchParams ||{};//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
     const query: Prisma.FacultyWhereInput = {};
