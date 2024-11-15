@@ -67,7 +67,7 @@ const renderRow = (item: FacultyList) => (
         <td className='hidden md:table-cell'>{item.phone}</td>
         <td>
             <div className='flex items-center gap-2'>
-                <Link href={`/list/Faculties/${item.id}`}>
+                <Link href={`/faculties/${item.id}`}>
                     <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                         <Image src="/view.png" alt="" height={16} width={16} />
                     </button>
