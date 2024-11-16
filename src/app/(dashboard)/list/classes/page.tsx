@@ -5,59 +5,19 @@ import TableSearch from '@/components/TableSearch'
 import { role } from '@/lib/data'
 import prisma from '@/lib/prisma'
 import { Item_per_page } from '@/lib/settings'
+import { auth } from '@clerk/nextjs/server'
 import { Class, Faculty, Prisma, Semester} from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type ClassList = Class & { instructor: Faculty } & {semId:Semester};
-const columns = [
-    {
-        header: "Class Name",
-        accessor: "classname",
-        className: "",
-    },
-    {
-        header: "Capacity",
-        accessor: "capacity",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Instructor",
-        accessor: "instructor",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Semester",
-        accessor: "semester",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Actions",
-        accessor: "actions",
-        className: "",
-    },
-];
 
-const renderRow = (item: ClassList) => (
-    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-        <td className='flex items-center gap-4 p-4'>{item.name}</td>
-        <td className='hidden md:table-cell'>{item.capacity}</td>
-        <td className='hidden md:table-cell'>{item.instructor.firstname+" "+item.instructor.lastname}</td>
-        <td className='hidden md:table-cell'>{item.semId}</td>
 
-        <td>
-            <div className='flex items-center gap-2'>
-                {role === "admin" && (
-                    <>
-                        <FormModal table='class' type='update' data={item} />
-                        <FormModal table='class' type='delete' id={item.id} />
-                    </>)}
-            </div>
-        </td>
-    </tr>
-)
 const ClassListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+    const {sessionClaims}= await auth();
+    //console.log(userId)
+    const role=(sessionClaims?.metadata as {role:string})?.role;
     const { page, ...queryParams } = searchParams || {};//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
@@ -91,6 +51,53 @@ const ClassListpage = async ({ searchParams, }: { searchParams: { [key: string]:
         ),
         prisma.class.count({ where: query })
     ]);
+    const columns = [
+        {
+            header: "Class Name",
+            accessor: "classname",
+            className: "",
+        },
+        {
+            header: "Capacity",
+            accessor: "capacity",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Instructor",
+            accessor: "instructor",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Semester",
+            accessor: "semester",
+            className: "hidden md:table-cell",
+        },
+        ...(role === "admin"
+            ? [
+                {
+                  header: "Actions",
+                  accessor: "action",
+                },
+              ]:[])
+    ];
+    const renderRow = (item: ClassList) => (
+        <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+            <td className='flex items-center gap-4 p-4'>{item.name}</td>
+            <td className='hidden md:table-cell'>{item.capacity}</td>
+            <td className='hidden md:table-cell'>{item.instructor.firstname+" "+item.instructor.lastname}</td>
+            <td className='hidden md:table-cell'>{item.semId}</td>
+    
+            <td>
+                <div className='flex items-center gap-2'>
+                    {role === "admin" && (
+                        <>
+                            <FormModal table='class' type='update' data={item} />
+                            <FormModal table='class' type='delete' id={item.id} />
+                        </>)}
+                </div>
+            </td>
+        </tr>
+    )
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}

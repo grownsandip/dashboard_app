@@ -2,7 +2,7 @@ import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
 import prisma from '@/lib/prisma'
-import { role} from '@/lib/data'
+import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -17,75 +17,29 @@ type ExamsList = Exam & {
         faculty: Faculty
     }
 }
-const columns = [
-    {
-        header: "Subject Name",
-        accessor: "Subjectname",
-        classNme: "",
-    },
-    {
-        header: "Course Code",
-        accessor: "coursecode",
-        className: "",
-    },
-    {
-        header: "Instructor",
-        accessor: "instructor",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Date",
-        accessor: "commencement",
-    },
-    {
-        header: "Actions",
-        accessor: "actions",
-        className: "",
-    }
-];
 
-const renderRow = (item: ExamsList) => (
-    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-        <td className='items-center gap-4 p-4 font-semibold'>{item.lessons.subject.name}</td>
-        <td>{item.lessons.Class.name}</td>
-        <td className='hidden md:table-cell'>{item.lessons.faculty.firstname + " " + item.lessons.faculty.lastname}</td>
-        <td>{new Intl.DateTimeFormat("en-IN").format(item.startDate)}</td>
-        <td>
-            <div className='flex items-center gap-2'>
-                <Link href={`/list/Exams/${item.id}`}>
-                    <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
-                        <Image src="/view.png" alt="" height={16} width={16} />
-                    </button>
-                </Link>
-                {role === "admin" || role === "faculty" && (<>
-                    <FormModal table='exam' type="update" data={item} />
-                    <FormModal table='exam' type="delete" id={item.id} />
-                </>)}
-            </div>
-        </td>
-    </tr>
-)
 const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
     const { page, ...queryParams } = searchParams || {};//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
     const query: Prisma.ExamWhereInput = {};
+    query.lessons={};
     if (queryParams) {
         for (const [key, value] of Object.entries(queryParams)) {
             if (value !== undefined) {
                 switch (key) {
                     case "classId":
-                        query.lessons = { classId: parseInt(value) }
+                        query.lessons.classId=parseInt(value)
                         break;
                     case "facultyId": 
-                        query.lessons = { facultyId: value }
+                        query.lessons.facultyId=value 
                         break;
                     case "search": //search query based on two parameters
-                        query.lessons = {
-                            subject: {
-                                name: { contains: value, mode: "insensitive" }
+                        query.lessons.subject={
+                                name: {contains: value, mode: "insensitive" }
                             }
-                        }
                         break;
                     }
             }
@@ -111,6 +65,80 @@ const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]:
         ),
         prisma.exam.count({ where: query })
     ]);
+    //role conditions
+    switch(role){
+        case "admin":
+            break;
+        case "faculty":
+            query.lessons.facultyId=userId!
+            break;
+        case "student":
+            query.lessons.Class={
+                students:{
+                    some:{id:userId!}
+                }
+            }
+            break;
+        case "parent":
+            query.lessons.Class={
+                students:{
+                    some:{parentId:userId!}
+                }
+            }
+            break;
+        default:
+            break;
+    }
+    const renderRow = (item: ExamsList) => (
+        <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+            <td className='items-center gap-4 p-4 font-semibold'>{item.lessons.subject.name}</td>
+            <td>{item.lessons.Class.name}</td>
+            <td className='hidden md:table-cell'>{item.lessons.faculty.firstname + " " + item.lessons.faculty.lastname}</td>
+            <td>{new Intl.DateTimeFormat("en-IN").format(item.startDate)}</td>
+            <td>
+                <div className='flex items-center gap-2'>
+                    <Link href={`/list/Exams/${item.id}`}>
+                        <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
+                            <Image src="/view.png" alt="" height={16} width={16} />
+                        </button>
+                    </Link>
+                    {role === "admin" || role === "faculty" && (<>
+                        <FormModal table='exam' type="update" data={item} />
+                        <FormModal table='exam' type="delete" id={item.id} />
+                    </>)}
+                </div>
+            </td>
+        </tr>
+    )
+    const columns = [
+        {
+            header: "Subject Name",
+            accessor: "Subjectname",
+            classNme: "",
+        },
+        {
+            header: "Course Code",
+            accessor: "coursecode",
+            className: "",
+        },
+        {
+            header: "Instructor",
+            accessor: "instructor",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Date",
+            accessor: "commencement",
+        },
+        ...(role === "admin" || role==="faculty"
+            ? [
+                {
+                  header: "Actions",
+                  accessor: "action",
+                },
+              ]
+            : []),
+    ];
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { role } from "@/lib/data";
+import { currentUser } from "@clerk/nextjs/server";
 
 const menuItems = [
   {
@@ -10,85 +10,85 @@ const menuItems = [
         icon: "/home.png",
         label: "Home",
         href: "/",
-        visible: ["admin", "faculties", "student", "parent"],
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/teacher.png",
-        label: "faculties",
-        href: "/list/Faculties",
-        visible: ["admin", "faculties"],
+        label: "Faculties",
+        href: "/list/faculties",
+        visible: ["admin", "faculty"],
       },
       {
         icon: "/student.png",
         label: "Students",
-        href: "/list/Students",
-        visible: ["admin", "faculties"],
+        href: "/list/students",
+        visible: ["admin", "faculty"],
       },
       {
         icon: "/parent.png",
         label: "Parents",
         href: "/list/parents",
-        visible: ["admin", "faculties"],
+        visible: ["admin", "faculty"],
       },
       {
         icon: "/subject.png",
         label: "Subjects",
-        href: "/list/Subjects",
+        href: "/list/subjects",
         visible: ["admin"],
       },
       {
         icon: "/class.png",
         label: "Classes",
-        href: "/list/Classes",
-        visible: ["admin", "faculties"],
+        href: "/list/classes",
+        visible: ["admin", "faculty"],
       },
       {
         icon: "/lesson.png",
         label: "Lessons",
-        href: "/list/Lessons",
-        visible: ["admin", "faculties"],
+        href: "/list/lessons",
+        visible: ["admin", "faculty"],
       },
       {
         icon: "/exam.png",
         label: "Exams",
-        href: "/list/Exams",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/exams",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/assignment.png",
         label: "Assignments",
-        href: "/list/Assignments",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/assignments",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/result.png",
         label: "Results",
-        href: "/list/Results",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/results",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/attendance.png",
         label: "Attendance",
-        href: "/list/Attendance",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/attendance",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/calendar.png",
         label: "Events",
-        href: "/list/Events",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/events",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/message.png",
         label: "Messages",
-        href: "/list/Messages",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/messages",
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/announcement.png",
         label: "Announcements",
-        href: "/list/Announcements",
-        visible: ["admin", "faculties", "student", "parent"],
+        href: "/list/announcements",
+        visible: ["admin", "faculty", "student", "parent"],
       },
     ],
   },
@@ -99,25 +99,27 @@ const menuItems = [
         icon: "/profile.png",
         label: "Profile",
         href: "/profile",
-        visible: ["admin", "faculties", "student", "parent"],
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/setting.png",
         label: "Settings",
         href: "/settings",
-        visible: ["admin", "faculties", "student", "parent"],
+        visible: ["admin", "faculty", "student", "parent"],
       },
       {
         icon: "/logout.png",
         label: "Logout",
         href: "/logout",
-        visible: ["admin", "faculties", "student", "parent"],
+        visible: ["admin", "faculty", "student", "parent"],
       },
     ],
   },
 ];
 
-const Menu = () => {
+const Menu = async () => {
+  const user=await currentUser();
+  const role=user?.publicMetadata.role as string;
   return (
     <div className="mt-4 text-sm">
       {menuItems.map(i => (

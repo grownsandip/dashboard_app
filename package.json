@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/elements": "^0.19.3",
+    "@clerk/nextjs": "^6.3.4",
     "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^5.22.0",
     "@types/react-big-calendar": "^1.8.12",
@@ -34,7 +36,7 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },
- "prisma": {
-  "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
- }
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  }
 }

@@ -2,7 +2,7 @@ import React from 'react'
 
 const StaffPage = () => {
   return (
-    <div className=''>StaffPage</div>
+    <div className=''>Parent's Page</div>
   )
 }
 
