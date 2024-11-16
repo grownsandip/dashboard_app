@@ -17,7 +17,7 @@ const UserCards = async ({type}:{type:"admin"|"faculty"|"student"|"parent"}) => 
             <Image src="/more.png" alt='more' height={20} width={20}/>
         </div>
         <h1 className='text-xl font-semibold my-4'>{data}</h1>
-        <h2 className='font-medium text-sm capitalize text-gray-500'>type</h2>
+        <h2 className='font-medium text-sm capitalize text-gray-500'>{type}</h2>
     </div>
   )
 }

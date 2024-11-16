@@ -1,7 +1,41 @@
-"use client"
+
+import prisma from '@/lib/prisma'
+import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 
-const Announcements = () => {
+const Announcements = async () => {
+    const { userId, sessionClaims } = await auth();
+    const role = (sessionClaims?.metadata as { role?: string })?.role;
+    //role conditions as events can be genral and class specific
+    const roleConditions = {
+        faculty: {
+            lessons: {
+                some: { facultyId: userId! }
+            }
+        },
+        student: {
+            students: {
+                some: { id: userId! }
+            }
+        },
+        parent: {
+            students: {
+                some: { parentId: userId! }
+            }
+        }
+    }
+    const data = await prisma.announcement.findMany({
+        take: 3,
+        orderBy: { date: "desc" },
+        where: {
+            ...(role !== "admin" && {
+                OR: [{ classId: null }, 
+                    { class: roleConditions[role as keyof typeof roleConditions] || {} }
+                ],
+            }),
+        },
+    })
+   // console.log(data)
     return (
         <div className='bg-white rounded-md p-4'>
             <div className='flex items-center justify-between'>
@@ -9,27 +43,27 @@ const Announcements = () => {
                 <span className='text-xs text-gray-400'>View all</span>
             </div>
             <div className='flex flex-col gap-4 mt-4'>
-                <div className='bg-lightSky rounded-md p-4'>
+                {data[0] && (<div className='bg-lightSky rounded-md p-4'>
                     <div className='flex items-center justify-between'>
-                        <h2 className='font-medium'>Lorem ipsum dolor sit</h2>
-                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>21-10-2025</span>
+                        <h2 className='font-medium'>{data[0].title}</h2>
+                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>{new Intl.DateTimeFormat("en-IN").format(data[0].date)}</span>
                     </div>
-                    <p className='text-sm text-gray-500 mt-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat adipisci molestias quisquam delectus sunt neque hic accusantium illum </p>
-                </div>
-                <div className='bg-YellowLight rounded-md p-4'>
+                    <p className='text-sm text-gray-500 mt-1'>{data[0].description}</p>
+                </div>)}
+                {data[1] && (<div className='bg-YellowLight rounded-md p-4'>
                     <div className='flex items-center justify-between'>
-                        <h2 className='font-medium'>Lorem ipsum dolor sit</h2>
-                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>21-10-2025</span>
+                        <h2 className='font-medium'>{data[1].title}</h2>
+                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>{new Intl.DateTimeFormat("en-IN").format(data[1].date)}</span>
                     </div>
-                    <p className='text-sm text-gray-500 mt-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat adipisci molestias quisquam delectus sunt neque hic accusantium illum </p>
-                </div>
-                <div className='bg-PurpleLight rounded-md p-4'>
+                    <p className='text-sm text-gray-500 mt-1'>{data[1].description}</p>
+                </div>)}
+                {data[2] && (<div className='bg-PurpleLight rounded-md p-4'>
                     <div className='flex items-center justify-between'>
-                        <h2 className='font-medium'>Lorem ipsum dolor sit</h2>
-                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>21-10-2025</span>
+                        <h2 className='font-medium'>{data[2].title}</h2>
+                        <span className='text-xs text-gray-400 bg-white rounded-md px-1 py-1'>{new Intl.DateTimeFormat("en-IN").format(data[2].date)}</span>
                     </div>
-                    <p className='text-sm text-gray-500 mt-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat adipisci molestias quisquam delectus sunt neque hic accusantium illum </p>
-                </div>
+                    <p className='text-sm text-gray-500 mt-1'>{data[2].description}</p>
+                </div>)}
             </div>
         </div>
     )
