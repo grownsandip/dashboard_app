@@ -2,66 +2,19 @@ import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { parentsData, role } from '@/lib/data'
 import prisma from '@/lib/prisma'
 import { Item_per_page } from '@/lib/settings'
+import { auth } from '@clerk/nextjs/server'
 import { Parent, Prisma, Student } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type ParentList = Parent & {students:Student[]}
-const columns = [
-    {
-        header: "Name",
-        accessor: "name",
-        className: "",
-    },
-    {
-        header: "Student Names",
-        accessor: "studentnames",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Contacts",
-        accessor: "contacts",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Address",
-        accessor: "address",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Actions",
-        accessor: "actions",
-        className: "",
-    },
-];
 
-const renderRow = (item: ParentList) => (
-    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-        <td className='flex items-center p-4 gap-4'>
-            <div className='flex flex-col'>
-                <h3 className='font-semibold'>{item.firstname}</h3>
-                <p className='text-xs text-gray-500'>{item?.email}</p>
-            </div>
-        </td>
-        <td className='hidden md:table-cell'>{item.students.map(student=>student.firstname).join(",")}</td>
-        <td className='hidden md:table-cell'>{item.phone}</td>
-        <td className='hidden md:table-cell'>{item.address}</td>
-        <td>
-            <div className='flex items-center gap-2'>
-                {role === "admin" && (
-                    <>
-                        <FormModal table='parent' type='update' data={item} />
-                        <FormModal table='parent' type='delete' id={item.id} />
-                    </>)}
-            </div>
-        </td>
-    </tr>
-)
-const ParentsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+const ParentsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) =>{
+    const {sessionClaims}=await auth();
+    const role=(sessionClaims?.metadata as {role:string})?.role;
     const { page, ...queryParams } = searchParams || {};//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
@@ -91,6 +44,59 @@ const ParentsListpage = async ({ searchParams, }: { searchParams: { [key: string
         ),
         prisma.parent.count({ where: query })
     ]);
+    const renderRow = (item: ParentList) => (
+        <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+            <td className='flex items-center p-4 gap-4'>
+                <div className='flex flex-col'>
+                    <h3 className='font-semibold'>{item.firstname}</h3>
+                    <p className='text-xs text-gray-500'>{item?.email}</p>
+                </div>
+            </td>
+            <td className='hidden md:table-cell'>{item.students.map(student=>student.firstname).join(",")}</td>
+            <td className='hidden md:table-cell'>{item.phone}</td>
+            <td className='hidden md:table-cell'>{item.address}</td>
+            <td>
+                <div className='flex items-center gap-2'>
+                    {role === "admin" && (
+                        <>
+                            <FormModal table='parent' type='update' data={item} />
+                            <FormModal table='parent' type='delete' id={item.id} />
+                        </>)}
+                </div>
+            </td>
+        </tr>
+    )
+    const columns = [
+        {
+            header: "Name",
+            accessor: "name",
+            className: "",
+        },
+        {
+            header: "Student Names",
+            accessor: "studentnames",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Contacts",
+            accessor: "contacts",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Address",
+            accessor: "address",
+            className: "hidden md:table-cell",
+        },
+        ...(role === "admin"
+            ? [
+                {
+                  header: "Actions",
+                  accessor: "action",
+                },
+              ]
+            : []),
+    ];
+
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}

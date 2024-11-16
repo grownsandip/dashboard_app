@@ -2,78 +2,19 @@ import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role, studentsData } from '@/lib/data'
 import prisma from '@/lib/prisma'
 import { Item_per_page } from '@/lib/settings'
+import { auth } from '@clerk/nextjs/server'
 import { Class, Prisma, Student } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
 type studentList = Student & {class:Class}
-const columns = [
-    {
-        header: "Name",
-        accessor: "name",
-        className: "",
-    },
-    {
-        header: "Student ID",
-        accessor: "studentid",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Enrolled",
-        accessor: "program",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Semester",
-        accessor: "semester",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Contacts",
-        accessor: "contacts",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Actions",
-        accessor: "actions",
-        className: "",
-    },
-];
 
-const renderRow = (item: studentList) => (
-    <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
-        <td className='flex items-center p-4 gap-4'>
-            <Image src={item.img ||"/noAvatar.png"} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover' />
-            <div className='flex flex-col'>
-                <h3 className='font-semibold'>{item.firstname}</h3>
-                <p className='text-xs text-gray-500'>{item?.email}</p>
-            </div>
-        </td>
-        <td className='hidden md:table-cell'>{item.id}</td>
-        <td className='hidden md:table-cell'>{item.class.name}</td>
-        <td className='hidden md:table-cell'>{item.semId}th</td>
-        <td className='hidden md:table-cell'>{item.phone}</td>
-        <td>
-            <div className='flex items-center gap-2'>
-                <Link href={`/list/Students/${item.id}`}>
-                    <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
-                        <Image src="/view.png" alt="" height={16} width={16} />
-                    </button>
-                </Link>
-                {role === "admin" && (//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
-                    //<Image src="/delete.png" alt="" height={16} width={16}/>
-                    //</button>
-                    <FormModal table='student' type='delete' id={item.id} />
-                )}
-            </div>
-        </td>
-    </tr>
-)
 const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
+    const { sessionClaims, userId } = await auth();
+    const role = (sessionClaims?.metadata as { role: string })?.role;
     const { page, ...queryParams } = searchParams ||{};//getting info from search params
     const p = page ? parseInt(page) : 1; //if page exists otherwise take 1 as default
     //URL PARAMS CONDITION Params may have many roles we need to filter them out
@@ -112,6 +53,70 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
         ),
         prisma.student.count({ where: query })
     ]);
+    const renderRow = (item: studentList) => (
+        <tr key={item.id} className='border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-PurpleLight'>
+            <td className='flex items-center p-4 gap-4'>
+                <Image src={item.img ||"/noAvatar.png"} alt="" height={40} width={40} className='md:hidden xl:block w-10 h-10 rounded-full object-cover' />
+                <div className='flex flex-col'>
+                    <h3 className='font-semibold'>{item.firstname}</h3>
+                    <p className='text-xs text-gray-500'>{item?.email}</p>
+                </div>
+            </td>
+            <td className='hidden md:table-cell'>{item.id}</td>
+            <td className='hidden md:table-cell'>{item.class.name}</td>
+            <td className='hidden md:table-cell'>{item.semId}th</td>
+            <td className='hidden md:table-cell'>{item.phone}</td>
+            <td>
+                <div className='flex items-center gap-2'>
+                    <Link href={`/list/Students/${item.id}`}>
+                        <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
+                            <Image src="/view.png" alt="" height={16} width={16} />
+                        </button>
+                    </Link>
+                    {role === "admin" && (//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
+                        //<Image src="/delete.png" alt="" height={16} width={16}/>
+                        //</button>
+                        <FormModal table='student' type='delete' id={item.id} />
+                    )}
+                </div>
+            </td>
+        </tr>
+    )
+    const columns = [
+        {
+            header: "Name",
+            accessor: "name",
+            className: "",
+        },
+        {
+            header: "Student ID",
+            accessor: "studentid",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Enrolled",
+            accessor: "program",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Semester",
+            accessor: "semester",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Contacts",
+            accessor: "contacts",
+            className: "hidden md:table-cell",
+        },
+        ...(role === "admin"
+            ? [
+                {
+                    header: "Actions",
+                    accessor: "action",
+                },
+            ]
+            : []),
+    ];
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
             {/* TOP */}
