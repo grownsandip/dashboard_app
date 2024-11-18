@@ -16,10 +16,9 @@ const AnnouncementListPage = async ({
     searchParams: { [key: string]: string | undefined };
 }) => {
   
-  const {sessionClaims,userId}= await auth();
+  const {userId,sessionClaims}= await auth();
   //console.log(userId)
   const role=(sessionClaims?.metadata as {role:string})?.role;
-  const currentUserId=userId
   const columns = [
     {
       header: "Title",
@@ -60,8 +59,8 @@ const AnnouncementListPage = async ({
           case "search":
             query.title = { contains: value, mode: "insensitive" };
             break;
-            default:
-                break;
+          default:
+            break;
             }
         }
     }
@@ -70,9 +69,9 @@ const AnnouncementListPage = async ({
 // ROLE CONDITIONS
 
 const roleConditions = {
-    teacher: { lessons: { some: { facultyId: currentUserId! } } },
-    student: { students: { some: { id: currentUserId! } } },
-    parent: { students: { some: { parentId: currentUserId! } } },
+    faculty: { lessons: { some: { facultyId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
 };
 
   query.OR = [

@@ -1,4 +1,4 @@
-import FormModal from '@/components/FormModal'
+
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -9,6 +9,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Item_per_page } from '@/lib/settings'
 import { auth } from '@clerk/nextjs/server'
+import FormContainer from '@/components/FormContainer'
 
 type FacultyList = Faculty & { subjects: Subject[] } & { classes: Class[] } //type declared for the typescript 
 const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string]: string } | undefined }) => {
@@ -76,7 +77,7 @@ const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string
                         </button>
                     </Link>
                     {role === "admin" && (
-                        <FormModal table='faculty' type='delete' id={item.id} />
+                        <FormContainer table='faculty' type='delete' id={item.id} />
                     )}
                 </div>
             </td>
@@ -139,7 +140,7 @@ const FacultyListpage = async ({ searchParams, }: { searchParams: { [key: string
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
                         {role == "admin" && (
-                            <FormModal table='faculty' type='create' />
+                            <FormContainer table='faculty' type='create' />
                         )}
                     </div>
                 </div>

@@ -151,7 +151,7 @@ const ResultsListpage = async ({ searchParams, }: { searchParams: { [key: string
             accessor: "coursecode",
             className: "hidden md:table-cell",
         },
-        ...(role === "admin" || role === "teacher"
+        ...(role === "admin" || role === "faculty"
             ? [
                 {
                     header: "Actions",

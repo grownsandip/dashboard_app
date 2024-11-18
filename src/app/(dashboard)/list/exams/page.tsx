@@ -97,12 +97,12 @@ const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]:
             <td>{new Intl.DateTimeFormat("en-IN").format(item.startDate)}</td>
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/Exams/${item.id}`}>
+                    <Link href={`/list/exams/${item.id}`}>
                         <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                             <Image src="/view.png" alt="" height={16} width={16} />
                         </button>
                     </Link>
-                    {role === "admin" || role === "faculty" && (<>
+                    {(role === "admin" || role === "faculty") && (<>
                         <FormModal table='exam' type="update" data={item} />
                         <FormModal table='exam' type="delete" id={item.id} />
                     </>)}
@@ -153,7 +153,7 @@ const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]:
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="sort" height={14} width={14} />
                         </button>
-                        {role === "admin" || role === "faculty" && (
+                        {(role === "admin" || role === "faculty") && (
                             <FormModal table="exam" type="create" />)}
                     </div>
                 </div>

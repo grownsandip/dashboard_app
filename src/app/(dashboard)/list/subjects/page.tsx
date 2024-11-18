@@ -1,3 +1,4 @@
+import FormContainer from '@/components/FormContainer'
 import FormModal from '@/components/FormModal'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
@@ -53,8 +54,8 @@ const SubjectsListpage = async ({ searchParams, }: { searchParams: { [key: strin
                 <div className='flex items-center gap-2'>
                     {role === "admin" && (
                         <>
-                            <FormModal table='subject' type='update' data={item} />
-                            <FormModal table='subject' type='delete' id={item.id} />
+                            <FormContainer table='subject' type='update' data={item} />
+                            <FormContainer table='subject' type='delete' id={item.id} />
                         </>)}
                 </div>
             </td>
@@ -71,11 +72,14 @@ const SubjectsListpage = async ({ searchParams, }: { searchParams: { [key: strin
             accessor: "facultynames",
             className: "hidden md:table-cell",
         },
-        {
-            header: "Actions",
-            accessor: "actions",
-            className: "",
-        },
+        ...(role === "admin"
+            ? [
+                {
+                    header: "Actions",
+                    accessor: "action",
+                },
+            ]
+            : []),
     ];
     return (
         <div className='bg-white rounded-md p-4 flex-1 m-4 mt-0'>
@@ -102,5 +106,6 @@ const SubjectsListpage = async ({ searchParams, }: { searchParams: { [key: strin
         </div>
     )
 }
+
 
 export default SubjectsListpage

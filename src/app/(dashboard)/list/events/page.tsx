@@ -15,7 +15,9 @@ const EventsListPage = async ({
     searchParams: { [key: string]: string | undefined };
   }) => {
     const { userId, sessionClaims } = await auth();
+   // console.log(userId)
     const role = (sessionClaims?.metadata as { role?: string })?.role;
+   // console.log(role)
     const columns = [
         {
           header: "Title",
@@ -77,15 +79,15 @@ const EventsListPage = async ({
             <div className="flex items-center gap-2">
               {role === "admin" && (
                 <>
-                  <FormModal table="event" type="update" data={item} />
-                  <FormModal table="event" type="delete" id={item.id} />
+                  (<FormModal table="event" type="update" data={item} />
+                  <FormModal table="event" type="delete" id={item.id} />)
                 </>
               )}
             </div>
           </td>
         </tr>
       );
-      const { page, ...queryParams } = searchParams;
+    const { page, ...queryParams } = searchParams;
 
   const p = page ? parseInt(page) : 1;
 
@@ -131,6 +133,7 @@ const EventsListPage = async ({
     }),
     prisma.event.count({ where: query }),
   ]);
+  //console.log(data)
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0">
     {/* TOP */}
@@ -145,7 +148,7 @@ const EventsListPage = async ({
           <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
             <Image src="/sort.png" alt="" width={14} height={14} />
           </button>
-          {role === "admin" && <FormModal table="event" type="create" />}
+          {role === "admin" && (<FormModal table="event" type="create" />)}
         </div>
       </div>
     </div>

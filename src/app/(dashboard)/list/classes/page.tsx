@@ -1,8 +1,7 @@
-import FormModal from '@/components/FormModal'
+import FormContainer from '@/components/FormContainer'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
-import { role } from '@/lib/data'
 import prisma from '@/lib/prisma'
 import { Item_per_page } from '@/lib/settings'
 import { auth } from '@clerk/nextjs/server'
@@ -91,8 +90,8 @@ const ClassListpage = async ({ searchParams, }: { searchParams: { [key: string]:
                 <div className='flex items-center gap-2'>
                     {role === "admin" && (
                         <>
-                            <FormModal table='class' type='update' data={item} />
-                            <FormModal table='class' type='delete' id={item.id} />
+                            <FormContainer table='class' type='update' data={item} />
+                            <FormContainer table='class' type='delete' id={item.id} />
                         </>)}
                 </div>
             </td>
@@ -112,7 +111,7 @@ const ClassListpage = async ({ searchParams, }: { searchParams: { [key: string]:
                         <button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             <Image src="/sort.png" alt="filter" height={14} width={14} />
                         </button>
-                        {role === "admin" && (<FormModal table='class' type='create' />)}
+                        {role === "admin" && (<FormContainer table='class' type='create' />)}
                     </div>
                 </div>
             </div>
