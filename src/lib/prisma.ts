@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"; 
-import { Global } from "recharts";
+
 const prismaClientSingleton=()=>{
     return new PrismaClient()
 }

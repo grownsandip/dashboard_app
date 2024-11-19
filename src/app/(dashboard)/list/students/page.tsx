@@ -1,4 +1,4 @@
-import FormModal from '@/components/FormModal'
+import FormContainer from '@/components/FormContainer'
 import Pagenation from '@/components/Pagenation'
 import Table from '@/components/Table'
 import TableSearch from '@/components/TableSearch'
@@ -68,7 +68,7 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
             <td className='hidden md:table-cell'>{item.phone}</td>
             <td>
                 <div className='flex items-center gap-2'>
-                    <Link href={`/list/Students/${item.id}`}>
+                    <Link href={`/list/students/${item.id}`}>
                         <button className='w-7 h-7 rounded-full bg-Sky flex items-center justify-center'>
                             <Image src="/view.png" alt="" height={16} width={16} />
                         </button>
@@ -76,7 +76,7 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
                     {role === "admin" && (//<button className='w-7 h-7 rounded-full bg-Purple flex items-center justify-center'>
                         //<Image src="/delete.png" alt="" height={16} width={16}/>
                         //</button>
-                        <FormModal table='student' type='delete' id={item.id} />
+                        <FormContainer table='student' type='delete' id={item.id} />
                     )}
                 </div>
             </td>
@@ -134,7 +134,7 @@ const StudentsListpage = async ({ searchParams, }: { searchParams: { [key: strin
                         {role === "admin" && (//<button className='w-8 h-8 flex items-center justify-center rounded-full bg-Yellow'>
                             //<Image src="/plus.png" alt="filter" height={14} width={14} />
                             // </button>
-                            <FormModal table='student' type='create' />
+                            <FormContainer table='student' type='create' />
                         )}
                     </div>
                 </div>

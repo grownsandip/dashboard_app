@@ -8,7 +8,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Item_per_page } from '@/lib/settings'
 import { Class, Exam, Faculty, Prisma, Subject } from '@prisma/client'
-import FormModal from '@/components/FormModal'
+import FormContainer from '@/components/FormContainer';
 
 type ExamsList = Exam & {
     lessons: {
@@ -103,8 +103,8 @@ const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]:
                         </button>
                     </Link>
                     {(role === "admin" || role === "faculty") && (<>
-                        <FormModal table='exam' type="update" data={item} />
-                        <FormModal table='exam' type="delete" id={item.id} />
+                        <FormContainer table='exam' type="update" data={item} />
+                        <FormContainer table='exam' type="delete" id={item.id} />
                     </>)}
                 </div>
             </td>
@@ -154,7 +154,7 @@ const ExamsListpage = async ({ searchParams, }: { searchParams: { [key: string]:
                             <Image src="/sort.png" alt="sort" height={14} width={14} />
                         </button>
                         {(role === "admin" || role === "faculty") && (
-                            <FormModal table="exam" type="create" />)}
+                            <FormContainer table="exam" type="create" />)}
                     </div>
                 </div>
             </div>
