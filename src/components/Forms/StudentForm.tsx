@@ -52,7 +52,8 @@ const FacultyForm = ({ type, data, setOpen, relatedData }: {
                         );
                     }}
                 </CldUploadWidget>
-            < div className='flex justify-between flex-wrap gap-4'>
+                <Image src={img?.secure_url ||"/noAvatar.png"} alt='avatar' height={30} width={30}/>
+            <div className='flex justify-between flex-wrap gap-4'>
                 <InputField type="text" label="First Name" name="firstname" defaultValue={data?.firstname} register={register} error={errors?.firstname} />
                 <InputField type="text" label="Last Name" name="lastname" defaultValue={data?.lastname} register={register} error={errors?.lastname} />
                 <InputField type="tel" label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />

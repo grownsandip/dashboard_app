@@ -41,7 +41,20 @@ const FacultyForm = ({ type, data, setOpen, relatedData }: {
                 <InputField type="password" label="Password" name="password" defaultValue={data?.password} register={register} error={errors?.password} />
             </div>
             <span className='text-xs text-gray-400 font-medium'>Personal information</span>
-            < div className='flex justify-between flex-wrap gap-4'>
+            <CldUploadWidget uploadPreset="Institute" onSuccess={(result,{widget})=>{
+                    setImg(result.info),
+                    widget.close()}}> 
+                    {({ open }) => {
+                        return (
+                            <div className='text-xs text-gray-400 flex items-center gap-2 cursor-pointer' onClick={()=>open()}>
+                            <Image src="/upload.png" alt="" width={28} height={28} />
+                            <span>Upload a photo</span>
+                        </div>
+                        );
+                    }}
+                </CldUploadWidget>
+                <Image src={img?.secure_url ||"/noAvatar.png"} alt='avatar' height={30} width={30}/>
+              <div className='flex justify-between flex-wrap gap-4'>
                 <InputField type="text" label="First Name" name="firstname" defaultValue={data?.firstname} register={register} error={errors?.firstname} />
                 <InputField type="text" label="Last Name" name="lastname" defaultValue={data?.lastname} register={register} error={errors?.lastname} />
                 <InputField type="tel" label="Phone" name="phone" defaultValue={data?.phone} register={register} error={errors.phone} />
@@ -64,16 +77,6 @@ const FacultyForm = ({ type, data, setOpen, relatedData }: {
                     </select>
                     {errors.subjects?.message && <p className='text-xs text-red-400'>{errors.subjects.message.toString()}</p>}
                 </div>
-                <CldUploadWidget uploadPreset="Institute" onSuccess={(result,{widget})=>{setImg(result.info),widget.close()}}> 
-                    {({ open }) => {
-                        return (
-                            <div className='text-xs text-gray-400 flex items-center gap-2 cursor-pointer' onClick={()=>open()}>
-                            <Image src="/upload.png" alt="" width={28} height={28} />
-                            <span>Upload a photo</span>
-                        </div>
-                        );
-                    }}
-                </CldUploadWidget>
             </div>
             {state.error && (<span className='text-red-500'>something went wrong </span>)}
             <button className='bg-blue-400 text-white p-2 rounded-md'>{type === "create" ? "Create" : "Update"}</button>

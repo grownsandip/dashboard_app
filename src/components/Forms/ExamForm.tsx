@@ -37,7 +37,7 @@ const ExamForm = ({ setOpen, type, data, relatedData }: { type: "create" | "upda
                 <InputField type="datetime-local" label="End Date" name="endTime" defaultValue={data?.endTime} register={register} error={errors?.endTime} />
                 {data && (<InputField type={type} label="Faculty Id" name="id" defaultValue={data?.id} register={register} error={errors?.id} hidden />)}
                 <div className='flex flex-col gap-2 w-full md:w-1/4'>
-                    <label className='text-xs text-gray-400'>Faculties</label>
+                    <label className='text-xs text-gray-400'>Lessons</label>
                     <select className='ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full' defaultValue={data?.faculties} {...register("lessonId")}>
                         { lessons.map((lesson: { id: number; name:string}) => (<option key={lesson.id} value={lesson.id}>{lesson.name}</option>))}
                     </select>
